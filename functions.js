@@ -1,228 +1,213 @@
 
-//untuk mempermudah memproses elemen
-function $(_){ return document.getElementById(_) }
+// untuk mempermudah proses element 
+function $(_) { return document.getElementById(_) }
 
+// ini deklarasi function menampilkan menu nav
 
-// deklarasi function menampilkan menu nav
-function tampil_menu(){
+function tampil_menu() {
+  // yang mana nav nya?
 
-    // yang mana nav nya?
-    let a = document.getElementById('nav')
+  let a = document.getElementById("nav")
 
-    // yang mana tombol menu nya?
-    let b = document.getElementById('tombol-menu')
+  //yang mana tombol menunya?
+  let b = document.getElementById("tombol-menu")
 
-    // tampilkan nav
-    a.style.display = 'block'
+  //tampilkan nav 
+  a.style.display = "block"
 
-    // hilangkan tombol menu
-    b.style.display = 'none'
+  //hilangkan tombol-menu
+  b.style.display = "none"
 }
 
-//sediakan array penampung setiap image yang sudah
-// selesai loading
+// {} curly brace () [] square brackets () parenthesis
+// sediakan array penampung setiap image yang selesai loading
 let loaded = []
 
-//variabel untuk menunjukkan slide nomor berapa
-// yang ditampilkan
+// variable untuk menunjukkan slide nomor berapa yang ditampilkan
 let slide_tampil = 0
 
-//sediakan variabel untuk penanda setInterval supaya
-// nanti setInterval bisa dihentikan dengan
-// perintah clearInterval()
+//  sediakan variable untuk penanda setInterval supaya nanti setInterval bisa dihentikan dengan perintah clearInterval()
 var jadwal
 
-//function yang dipanggil oleh body onload
-function slideshow() {
+// menciptakan function yang dipanggil oleh body onload 
+function slideShow() {
 
-    // proses data dari daftar gambar yang namanya stok
-    // yang berada di dalam index.html
-    for ( i=0; i<stok.length; i++){
+  // proses data dari daftar gambar yang namanya stock
+  // yang berada di dalam index.html
 
-        // ciptakan Image baru (dari class javascript)
-        let sld = new Image(720, 400)
+  for (i = 0; i < stok.length; i++) {
 
-        //pasang source gambarnya
-        sld.src = "upload/" + stok[i][0]
+    // ciptakan image baru (dari class javascript)
+    let sld = new Image(720, 400)
 
-        //berikan id nomor urut supaya nanti bisa 
-        //disusun ulang urutannya
-        sld.id = i
+    // pasangkan source gambarnya
+    sld.src = "upload/" + stok[i][0]
 
-        //pasang data gambarnya
-        sld.data = { link:stok[i][1],
-                     judul:stok[i][2] }
-        
-        // supaya setiap kali selesai loading satu gambar
-        // kita bisa cek, pasang event onload yang akan
-        // memanggil function cek_loading, yang diperiksa
-        // adalah si sld ini sendiri
-        sld.onload = function() { cek_loading(this) }
+    // berikan id nomor urut supaya nanti di susun ulang
+    sld.id = i
+
+    // pasang data gambarnya
+    sld.data = {
+      link: stok[i][1],
+      judul: stok[i][2]
     }
 
+    // supaya setiap kali selesai loading satu gambar 
+    // kita bisa cek, pasang event onload yang akan
+    // memanggil cek_loading, yang diperiksa
+    // adalah si sld ini sendiri
+    sld.onload = function () { cek_loading(this) }
+  }
 }
-
-//fungsi yang dijalankan setiap selesai load image
+// fungsi yang dijalankan setiap selesai load image
 function cek_loading(target) {
-    
-    //alert(target.id)
+  // alert(target.src)
+  // alert(target.id)
 
-    // masukkan si target ini ke loaded
-    // gunakan id masing-masing sebagai urutan
-    // di dalam array
-    loaded[target.id] = target
+  // masukkan si target in ke loaded
+  // gunakan id masing masing sebagai urutan didalam array array 
+  loaded[target.id] = target
 
-    //setiap kali mengisi loaded, cek jumlahnya
-    // kalau sama dengan stok, maka sudah penuh
-    if (loaded.length == stok.length) {
+  // setiap kali mengisi loaded cek jumlahnya
+  // kalau sama dengan stok, maka sudah selesai
+  if (loaded.length == stok.length) {
 
-        // sampai di sini, urutan array jadi acak
-        // karena perbedaan waktu loading gambar
-        // jadi perlu menyusun ulang urutan item
-        // di dalam loaded
-        
+    // sampai disini urutan array masih jadi acak
+    // karena perbedaan waktu loading gambar
+    // jadi perlu menyusun ulang urutan item
+    // di dalam loaded
 
-        // mulai menyusun gambar dan text
-        susun_slide()
-    }
+    // mulai menyusun gambar dan text 
+    susun_slide()
+  }
 }
 
-
-//tahapan menyusun gambar slide dan text di html
+// tahapan menyusun gambar slide dan text di html
 function susun_slide() {
 
-    // proses satu persatu isi loaded
-    for (i=0; i<loaded.length; i++) {
+  // mulai proses satu persatu isi loaded 
+  for (i = 0; i < loaded.length; i++) {
 
-        // tampung ke variabel supaya mudah 
-        // menulis syntaxnya
-        sld = loaded[i]
+    // tampung ke variable sld supaya mudah menulis sintaxnya
+    sld = loaded[i]
 
-        // buat tag/element IMG
-        let img = document.createElement('IMG')
+    // buat tag/element IMG
+    let img = document.createElement("iMG")
 
-        img.src = sld.src
+    img.src = sld.src
 
-        //masukkan image ke slide-container
-        $('slide-container').appendChild(img)
+    // masukkan image ke slide-container
+    $('slide-container').appendChild(img)
 
+    // $('berita-slide').innerHTML = `${sld.data.judul} <a href='${sld.data.link}'>Selengkapnya
+    // <i class="fas fa-angle-double-right"></i></a>`
 
-        // selagi masih dalam looping susun juga
-        // tombol nomor slide
-        let anchor = document.createElement('A')
+    // selagi masih  dalam looping susun juga
+    // tombol nomor slide
 
-        // ketika diklik akan memanggil goto_slide(0)
-        // goto_slide(1), dst
-        anchor.href = `javascript:goto_slide(${i})`
+    let anchor = document.createElement('A')
 
-        //pasang css untuk anchor
-        // kalau class beda-beda
-        if (i == 0) anchor.className = 'prev'
-        else if (i == loaded.length-1) anchor.className = 'next'
-        else anchor.className = 'num'
+    // ketika diklik akan memanggil goto_slide(0) 
+    // goto_slide(1), dst
+    anchor.href = `javascript:goto_slide(${i})`
 
-        //isi atau labelnya adalah nomor slide
-        //dimulai dari angka 1
-        anchor.innerHTML = i+1
+    // pasang css untuk anchor
+    // anchor.className = 'prev num next'
+    // kalau kelas beda" setiap
+    if (i == 0) anchor.className = 'prev'
+    else if (i == loaded.length - 1) anchor.className = 'next'
+    else anchor.className = 'num'
 
-        //masukkan ke div panel
-        $('panel').appendChild(anchor)
+    // isi atau labelnya adalah nomor dimulai dari angka 1
+    anchor.innerHTML = i + 1
 
-    }
+    // masukkan ke div panel 
+    $('panel').appendChild(anchor)
+  }
 
-    //saat ini sudah tampil slide0, jadi supaya
-    //setInterval tidak mengawali dari nol, maka
-    // panggil jalan() satu kali
+  // saat ini sudah tampil slide 0, jadi supaya 
+  // setInterval tidak mengawali dari 0, maka
+  // panggil jalan() satu kali
+  jalan()
+
+  // sudah selesai menyusun gambar ke slide-container
+  jadwal = setInterval(jalan, 4000)
+
+  // pasang onclick ke tombol next
+  $('slide-right').onclick = function () {
     jalan()
+  }
 
-    //sesudah menyusun gambar ke slide-container
-	// maka mulai intervalnya
-    jadwal = setInterval( jalan, 5000)
+  // pasang onclick ke tombol prev
+  $('slide-left').onclick = function () {
 
-    // pasang onclick ke tombol next 
-    $('slide-right').onclick = function() {
-        reset_jalan()
+    // periksa dulu nilai slide_tampil
+    // menampilkan gambar tepat satu gambar
+    // sebelumnya
+
+    switch (slide_tampil) {
+      case 0:
+        slide_tampil = loaded.length - 2
+        break
+      case 1:
+        slide_tampil = loaded.length - 1
+        break
+      default:
+        slide_tampil -= 2
+        break
     }
-
-    // pasang onclick ke tombol previous
-    $('slide-left').onclick = function() {
-
-        //periksa dulu nilai slide_tampil supaya
-        //menampilkan gambar tepat satu gambar
-        // sebelumnya
-        switch (slide_tampil) {
-
-            case 0 :
-                slide_tampil = loaded.length - 2
-                break
-
-            case 1 :
-                slide_tampil = loaded.length - 1
-                break
-
-            default :
-                slide_tampil -= 2
-                break
-        }
-        //sesudah ditentukan slide_tampilnya yang
-        //mana, maka proses slidenya
-        reset_jalan()
-    }
+    // sesudah ditentukan slide_tampilnya yang mana
+    // maka proses selanjutnya
+    reset_jalan()
+  }
 }
-
 
 function reset_jalan() {
-	//reset setIntervalnya
-	clearInterval(jadwal)
-	// panggil jalan supaya diproses slidenya
-	jalan()
-	//ulangi lagi interval jalan
-	jadwal = setInterval(jalan,5000)
+  // reset setInterval nya
+  clearInterval(jadwal)
+
+  jalan()
+  // ulangi lagi interval jalan
+
+  jadwal = setInterval(jalan, 5000)
 }
 
-
-//fungsi yang mengganti-ganti className dari 
-// slide-container
+// funsgsi yang mengganti class name dari slide container
 function jalan() {
-    
-    // pasangkan class 'posisi0', 'posisi1', dst
-    $('slide-container').className = 'posisi' +
-                                      slide_tampil
-    
-    
-    // tampilkan judul berita sesuai slide yg tampil
-    tampil_berita(slide_tampil)
 
-    //naikkan nilai slide_tampil untuk yang berikutnya
-    slide_tampil ++
+  // pasangkan class 'posisi0', 'posisi1', dst
+  $('slide-container').className = 'posisi' + slide_tampil
 
-    // kalau nilai slide_tampil sampai ke jumlah slide
-    // kembalikan nilainya ke nol
-    if (slide_tampil == loaded.length) slide_tampil = 0
+  // tampilkan judul berita sesuai slide yang tampil
+  tampil_berita(slide_tampil)
+
+  // naikkan nilai slide_tampil untuk berikutnya 
+  slide_tampil++
+
+  // kalau nilai slide_tammpil sampai ke jumlah slide kembalikan ke 0
+  if (slide_tampil == loaded.length) slide_tampil = 0
 }
 
+// fungsi menampilkan slide yang nomornya terpilih
+function tampil_berita(nomorSlide) {
+  // yang mana itemnya?
+  sld = loaded[nomorSlide]
 
-//fungsi menampilkan slide yang nomornya terpilih
-function tampil_berita( nomorslide ) {
-	
-    // yang mana itemnya?
-    sld = loaded[nomorslide]
-
-    //tampilkan beritanya
-    $('berita-slide').innerHTML =
-    `${nomorslide+1}. ${sld.data.judul} <a href='${sld.data.link}' 
-     class='link1'> Selengkapnya &raquo; </a>`
+  // tampilkan beritanya
+  $('berita-slide').innerHTML = `${nomorSlide + 1}.${sld.data.judul} <a href='${sld.data.link}'>Selengkapnya
+    <i class="fas fa-angle-double-right"></i></a>`
 }
 
+// fucntion yang dipanggil masing masing tombol
+// nonor-slide
 
-//function yang dipanggil masing-masing tombol
-// nomor slide
 function goto_slide(nomor) {
 
-    // masukkan nomor itu ke slide_tampil
-    slide_tampil = nomor
+  // masukkan nomor itu ke slide_tampil
+  slide_tampil = nomor
 
-    // langsung jalankan
-    // jalan()
-    reset_jalan()
+  // langsung jalankan
+  // jalan()
+
+  reset_jalan()
 }
